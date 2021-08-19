@@ -3,7 +3,6 @@
 ### Обзор
 * Описание
 * Используемые технологии
-* GitHub Pages
 
 ### Описание
 
@@ -15,6 +14,3 @@
 * **JavaScript**
 * **SVG графика**
 * **React**
-
-**Ссылка на GitHub Pages**
-* https://tyradire.github.io/mesto/
