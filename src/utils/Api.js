@@ -5,7 +5,7 @@ class Api {
   }
 
   getUserInfo() {
-    return fetch('https://nomoreparties.co/v1/cohort-26/users/me', {
+    return fetch(this._url+'/users/me', {
       headers: this._headers
     }).then(this._handleResponse)
   }

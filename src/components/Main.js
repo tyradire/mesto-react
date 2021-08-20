@@ -7,7 +7,7 @@ function Main(props) {
   const [userName, setuserName] = useState('');
   const [userDescription, setuserDescription] = useState('');
   const [userAvatar, setuserAvatar] = useState('');
-  const [cards, setCards] = useState('');
+  const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -20,7 +20,6 @@ function Main(props) {
     .catch(err => console.log(err))
     api.getInitialCards()
     .then(res => {
-      console.log(res);
       const arr = res.map((item) => {
         return {
           link: item.link,

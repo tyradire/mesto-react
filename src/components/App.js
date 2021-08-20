@@ -11,6 +11,11 @@ import React, { useState } from 'react';
 
 function App() {
 
+  const [isAddPlacePopupOpen, setisAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setisEditAvatarPopupOpen] = useState(false);
+  const [isEditProfilePopupOpen, setisEditProfilePopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
+
   function handleAddPlaceClick() {
     setisAddPlacePopupOpen(true);
   }
@@ -23,8 +28,8 @@ function App() {
     setisEditProfilePopupOpen(true);
   }
 
-  function handleCardClick(link) {
-    setSelectedCard(link);
+  function handleCardClick(card) {
+    setSelectedCard(card);
   }
 
   function closeAllPopups() {
@@ -34,20 +39,21 @@ function App() {
     setSelectedCard(false);
   } 
 
-  const [isAddPlacePopupOpen, setisAddPlacePopupOpen] = useState(false);
-  const [isEditAvatarPopupOpen, setisEditAvatarPopupOpen] = useState(false);
-  const [isEditProfilePopupOpen, setisEditProfilePopupOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(false);
-
   return (
     <div className="page">
       <div className="page__content">
         <Header logo={Logo}/>
         <Main onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onCardClick={handleCardClick} />
         <Footer name={"\u00A9 2021 Mesto Russia"}/>
-        <PopupWithForm id={"popup-add"} title={"Новое место"} button={"Создать"} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} > <PopupNewPlace /> </PopupWithForm>
-        <PopupWithForm id={"popup-update"} title={"Обновить аватар"} button={"Сохранить"} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} > <PopupEditAvatar /> </PopupWithForm>
-        <PopupWithForm id={"popup-edit"} title={"Редактировать профиль"} button={"Сохранить"} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} > <PopupEditProfile /> </PopupWithForm>
+        <PopupWithForm id={"popup-add"} title={"Новое место"} button={"Создать"} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} > 
+          <PopupNewPlace /> 
+        </PopupWithForm>
+        <PopupWithForm id={"popup-update"} title={"Обновить аватар"} button={"Сохранить"} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} > 
+          <PopupEditAvatar /> 
+        </PopupWithForm>
+        <PopupWithForm id={"popup-edit"} title={"Редактировать профиль"} button={"Сохранить"} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} > 
+          <PopupEditProfile /> 
+        </PopupWithForm>
         <PopupWithForm id={"popup-confirm"} title={"Вы уверены?"} button={"Да"} isOpen={false} onClose={closeAllPopups} > </PopupWithForm>
         <ImagePopup isOpen={selectedCard} onClose={closeAllPopups} />
       </div>
