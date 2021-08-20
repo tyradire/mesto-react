@@ -1,9 +1,8 @@
-# Проект 4: Место
+# Проект 4: Mesto React
 
 ### Обзор
 * Описание
 * Используемые технологии
-* GitHub Pages
 
 ### Описание
 
@@ -15,6 +14,3 @@
 * **JavaScript**
 * **SVG графика**
 * **React**
-
-**Ссылка на GitHub Pages**
-* https://tyradire.github.io/mesto/
