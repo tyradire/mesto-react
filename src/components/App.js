@@ -5,9 +5,11 @@ import Logo from '../images/logo.svg';
 import PopupWithForm from './PopupWithForm';
 import PopupNewPlace from './PopupNewPlace';
 import PopupEditAvatar from './PopupEditAvatar';
-import PopupEditProfile from './PopupEditProfile';
+import EditProfilePopup from './EditProfilePopup';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import ImagePopup from './ImagePopup';
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
+import api from '../utils/Api';
 
 function App() {
 
@@ -15,6 +17,15 @@ function App() {
   const [isEditAvatarPopupOpen, setisEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setisEditProfilePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [currentUser, setCurrentUser] = useState({});
+
+  useEffect(() => {
+    api.getUserInfo()
+    .then(res => {
+      setCurrentUser(res);
+    })
+    .catch(err => console.log(err))
+  }, []);
 
   function handleAddPlaceClick() {
     setisAddPlacePopupOpen(true);
@@ -40,24 +51,24 @@ function App() {
   } 
 
   return (
-    <div className="page">
-      <div className="page__content">
-        <Header logo={Logo}/>
-        <Main onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onCardClick={handleCardClick} />
-        <Footer name={"\u00A9 2021 Mesto Russia"}/>
-        <PopupWithForm id={"popup-add"} title={"Новое место"} button={"Создать"} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} > 
-          <PopupNewPlace /> 
-        </PopupWithForm>
-        <PopupWithForm id={"popup-update"} title={"Обновить аватар"} button={"Сохранить"} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} > 
-          <PopupEditAvatar /> 
-        </PopupWithForm>
-        <PopupWithForm id={"popup-edit"} title={"Редактировать профиль"} button={"Сохранить"} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} > 
-          <PopupEditProfile /> 
-        </PopupWithForm>
-        <PopupWithForm id={"popup-confirm"} title={"Вы уверены?"} button={"Да"} isOpen={false} onClose={closeAllPopups} > </PopupWithForm>
-        <ImagePopup isOpen={selectedCard} onClose={closeAllPopups} />
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="page">
+        <div className="page__content">
+          <Header logo={Logo}/>
+          <Main onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onCardClick={handleCardClick} />
+          <Footer name={"\u00A9 2021 Mesto Russia"}/>
+          <PopupWithForm id={"popup-add"} title={"Новое место"} button={"Создать"} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} > 
+            <PopupNewPlace /> 
+          </PopupWithForm>
+          <PopupWithForm id={"popup-update"} title={"Обновить аватар"} button={"Сохранить"} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} > 
+            <PopupEditAvatar /> 
+          </PopupWithForm>
+          <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
+          <PopupWithForm id={"popup-confirm"} title={"Вы уверены?"} button={"Да"} isOpen={false} onClose={closeAllPopups} > </PopupWithForm>
+          <ImagePopup isOpen={selectedCard} onClose={closeAllPopups} />
+        </div>
       </div>
-    </div>
+    </CurrentUserContext.Provider>
   );
 }
 
