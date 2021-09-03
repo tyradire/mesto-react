@@ -6,6 +6,7 @@ import PopupWithForm from './PopupWithForm';
 import PopupNewPlace from './PopupNewPlace';
 import PopupEditAvatar from './PopupEditAvatar';
 import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import ImagePopup from './ImagePopup';
 import React, { useState, useEffect  } from 'react';
@@ -17,7 +18,7 @@ function App() {
   const [isEditAvatarPopupOpen, setisEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setisEditProfilePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState({name: '', about: ''});
 
   useEffect(() => {
     api.getUserInfo()
@@ -50,6 +51,17 @@ function App() {
     setSelectedCard(false);
   } 
 
+  function handleUpdateUser(info) {
+    api.editUserInfo(info.name, info.about)
+    .then((res) => {
+      setCurrentUser(res);
+    })
+    .catch(err => console.log(err))
+    .finally(() => {
+      closeAllPopups();
+    })
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -60,10 +72,8 @@ function App() {
           <PopupWithForm id={"popup-add"} title={"Новое место"} button={"Создать"} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} > 
             <PopupNewPlace /> 
           </PopupWithForm>
-          <PopupWithForm id={"popup-update"} title={"Обновить аватар"} button={"Сохранить"} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} > 
-            <PopupEditAvatar /> 
-          </PopupWithForm>
-          <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
+          <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
+          <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
           <PopupWithForm id={"popup-confirm"} title={"Вы уверены?"} button={"Да"} isOpen={false} onClose={closeAllPopups} > </PopupWithForm>
           <ImagePopup isOpen={selectedCard} onClose={closeAllPopups} />
         </div>
