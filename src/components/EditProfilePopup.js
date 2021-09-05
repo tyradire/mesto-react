@@ -4,8 +4,8 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function EditProfilePopup(props) {
 
-  const [name, setName] = useState({});
-  const [description, setDescription] = useState({});
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
 
   function nameChange(e) {
     setName(e.target.value);
@@ -23,7 +23,7 @@ function EditProfilePopup(props) {
   useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser]);
+  }, [currentUser, props.isOpen]);
 
   function handleSubmit(e) {
     // Запрещаем браузеру переходить по адресу формы

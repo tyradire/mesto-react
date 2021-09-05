@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Card({link, name, likes, likesAmount, id, owner, onCardClick, onCardLike, onCardDelete, profile}) { 
+function Card({link, name, likes, likesAmount, id, owner, onCardClick, onCardLike, onDeleteCofirm, profile}) { 
 
   function handleClick() {
     onCardClick({link: link, name: name});
@@ -11,7 +11,7 @@ function Card({link, name, likes, likesAmount, id, owner, onCardClick, onCardLik
   }
 
   function handleDeleteClick() {
-    onCardDelete(id);
+    onDeleteCofirm(id);
   }
 
   // Определяем, являемся ли мы владельцем текущей карточки
