@@ -24,17 +24,10 @@ function App() {
   const [idDeletedCard, setIdDeletedCard] = useState('');
 
   useEffect(() => {
-    api.getUserInfo()
-    .then(res => {
-      setCurrentUser(res);
-    })
-    .catch(err => console.log(err))
-  }, []);
-
-  useEffect(() => {
-    api.getInitialCards()
-    .then(res => {
-      const arr = res.map((item) => {
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+    .then(([ userData, cards ]) => {
+      setCurrentUser(userData);
+      const arr = cards.map((item) => {
         return {
           link: item.link,
           name: item.name,
@@ -47,7 +40,7 @@ function App() {
       setCards(arr);
       setIsLoading(false);
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err));
   }, []);
 
   function handleCardLike(likes, id) {
@@ -73,12 +66,10 @@ function App() {
   function handleCardDelete() {
     api.deleteCard(idDeletedCard)
     .then(() => {
-      setCards(cards.filter(card => card.id !== idDeletedCard))
-    })
-    .catch(err => console.log(err))
-    .finally(() => {
+      setCards(cards.filter(card => card.id !== idDeletedCard));
       closeAllPopups();
     })
+    .catch(err => console.log(err))
   }
 
   function handleAddPlaceClick() {
@@ -114,22 +105,18 @@ function App() {
     api.editUserInfo(info.name, info.about)
     .then((res) => {
       setCurrentUser(res);
-    })
-    .catch(err => console.log(err))
-    .finally(() => {
       closeAllPopups();
     })
+    .catch(err => console.log(err))
   }
 
   function handleUpdateAvatar(info) {
     api.editUserAvatar(info.avatar)
     .then((res) => {
       setCurrentUser(res);
-    })
-    .catch(err => console.log(err))
-    .finally(() => {
       closeAllPopups();
     })
+    .catch(err => console.log(err))
   }
 
   function handleAddPlaceSubmit(name, link) {
@@ -144,11 +131,9 @@ function App() {
         owner: res.owner._id
       }
       setCards([newCard, ...cards]);
-    })
-    .catch(err => console.log(err))
-    .finally(() => {
       closeAllPopups();
     })
+    .catch(err => console.log(err))
   }
 
   return (
